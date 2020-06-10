@@ -9,12 +9,27 @@ const InfoPage = () =>{
     const [email,setEmail] = useState("")
     const [password,setPassword] = useState("")
     const [phone,setPhone] = useState("")
+    const [url,setUrl] = useState("")
     
     const PostData = () =>{
         // if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
         //     console.log("invalid email")
         //     return
         // }
+        const data = new FormData()
+        data.append("file",url)
+        data.append("upload_preset","leewayhertz")
+        data.append("cloud_name","kishansinghchauhan")
+        fetch("https://api.cloudinary.com/v1_1/kishansinghchauhan/image/upload",{
+            method:"post",
+            body:data
+        })
+        .then(res => res.json())
+        .then(data => {
+            setUrl(data.url)
+        }).catch(err => {
+            console.log(err)
+        })
         fetch('/',{
             method:"post",
             headers:{
@@ -24,7 +39,8 @@ const InfoPage = () =>{
                 name,
                 email,
                 password,
-                phone
+                phone,
+                image:url
             })
         }).then( res => res.json())
             .then( data => {
@@ -64,6 +80,17 @@ const InfoPage = () =>{
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}    
                 />  
+                <Button
+                  variant="contained"
+                  component="label"
+                >
+                  Upload File
+                  <input
+                    type="file"
+                    // style={{ display: "none" }}
+                    onChange={(e) => setUrl(e.target.files[0])}
+                  />
+                </Button>
             </form>
             <Button variant="contained" style={{background:'#D93025',color:'#FFFFFF',padding:'10px 15px',marginBottom:'20px'}} 
                 onClick={() => PostData()}
