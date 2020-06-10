@@ -2,6 +2,7 @@ import React,{useState} from 'react';
 import {useHistory} from 'react-router-dom'
 import {TextField,Card,Button} from '@material-ui/core';
 import MuiPhoneNumber from 'material-ui-phone-number'
+import swal from 'sweetalert';
 
 const InfoPage = () =>{
     const history = useHistory()
@@ -12,10 +13,13 @@ const InfoPage = () =>{
     const [url,setUrl] = useState("")
     
     const PostData = () =>{
-        // if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
-        //     console.log("invalid email")
-        //     return
-        // }
+        if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
+            swal("Invalid Email", {
+                button: false,
+                timer:"2000"
+            });
+            return
+        }
         const data = new FormData()
         data.append("file",url)
         data.append("upload_preset","leewayhertz")
@@ -44,12 +48,17 @@ const InfoPage = () =>{
             })
         }).then( res => res.json())
             .then( data => {
-                console.log(data)
                 if(data.error){
-                    console.log(data.error)
+                    swal(data.error, {
+                        button: false,
+                        timer:"2000"
+                    });
                 }
                 else{
-                    console.log(data.message)
+                    swal(data.message, {
+                        button: false,
+                        timer:"2000",
+                    });
                     history.push('/Home')
                 }
             }).catch(err =>{
@@ -79,16 +88,18 @@ const InfoPage = () =>{
                     className="w-75" variant="outlined" style={{margin:'25px 0 40px 0'}}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}    
-                />  
+                /> 
                 <Button
                   variant="contained"
                   component="label"
+                  style={{marginBottom:'20px'}}
                 >
                   Upload File
                   <input
                     type="file"
-                    // style={{ display: "none" }}
+                    style={{ display: "none" }}
                     onChange={(e) => setUrl(e.target.files[0])}
+                    
                   />
                 </Button>
             </form>

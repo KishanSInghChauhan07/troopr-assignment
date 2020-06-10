@@ -2,8 +2,8 @@ import React from 'react';
 
 const HomePage = () => {
     return(
-        <div>
-            <h1>Hello</h1>
+        <div className='text-center mt-5 text-success'>
+            <h2>Than You! We are working on user connection with here and we will add new things early</h2>
         </div>
     )
 }
