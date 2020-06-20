@@ -9,7 +9,7 @@ const dataSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    password:{
+    address:{
         type:String,
         required:true
     },

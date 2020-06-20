@@ -6,8 +6,8 @@ const bcrypt = require('bcryptjs');
 
 
 router.post('/',(req,res) => {
-    const {name,email,password,phone,image} = req.body
-    if(!email || !password || !name || !phone || !image){
+    const {name,email,password,address,phone,image} = req.body
+    if(!email || !name || !phone || !image || !address){
         return res.status(422).json({error:"Please add all the fields"})
     }
     Data.findOne({email:email})
@@ -15,13 +15,11 @@ router.post('/',(req,res) => {
         if(savedUser){
             return res.status(422).json({error:"user already exists"})
         }
-        bcrypt.hash(password,12)
-        .then( hashedPassword => {
             const data = new Data({
                 email,
                 name,
                 phone,
-                password:hashedPassword,
+                address,
                 image
             })
             data.save()
@@ -32,10 +30,21 @@ router.post('/',(req,res) => {
                 console.log(err);
 
             })
-        })
+        
         
     })
     .catch(err => {
+        console.log(err);
+        
+    })
+})
+
+router.get('/all',(req,res) => {
+    Data.find()
+    .then( data =>{
+        res.json({data})
+    })
+    .catch(err =>{
         console.log(err);
         
     })

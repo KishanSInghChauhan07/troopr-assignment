@@ -3,3 +3,20 @@
 *{
   font-family: 'Montaga', serif;
 }
+
+.main-header{
+  background-color: black !important;
+}
+.head-link a{
+  color:white !important;
+  font-weight: 600;
+}
+
+.head-link a:hover{
+  text-decoration: none;
+}
+
+
+.modal-button:active,.modal-button:focus{
+  border: none;
+}
