@@ -1,8 +1,6 @@
 import React,{useState} from 'react';
 import {TextField,Card,Button} from '@material-ui/core';
 import MuiPhoneNumber from 'material-ui-phone-number'
-import swal from 'sweetalert';
-import {useHistory} from 'react-router-dom'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
@@ -13,65 +11,7 @@ const EditUserDatails = ({handleClose,data}) =>{
     const [phone,setPhone] = useState("")
     const [address,setAddress] = useState("")
     const [url,setUrl] = useState("")
-    const history = useHistory(); 
 
-    console.log(data);
-    
-    const PostData = () =>{
-        if(!/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email)){
-            swal("Invalid Email", {
-                button: false,
-                timer:"2000"
-            });
-            return
-        }
-        // const data = new FormData()
-        // data.append("file",url)
-        // data.append("upload_preset","leewayhertz")
-        // data.append("cloud_name","kishansinghchauhan")
-        // fetch("https://api.cloudinary.com/v1_1/kishansinghchauhan/image/upload",{
-        //     method:"post",
-        //     body:data
-        // })
-        // .then(res => res.json()) 
-        // .then(data => {
-        //     setUrl(data.url)
-        // }).catch(err => {
-        //     console.log(err)
-        // })
-        
-            
-        fetch('/user/'+data.id,{
-            method:"post",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({
-                name,
-                email,
-                phone,
-                address,
-                image:url
-            })
-        }).then( res => res.json())
-            .then( data => {
-                if(data.error){
-                    swal(data.error, {
-                        button: false,
-                        timer:"2000"
-                    });
-                }
-                else{
-                    swal(data.message, {
-                        button: false,
-                        timer:"2000",
-                    });
-                    history.push('/Users');
-                }
-            }).catch(err =>{
-                console.log(err);    
-            })
-    }
     return(
         <Card className='' style={{margin:'6% auto',padding:'50px 50px',boxShadow:'1px 1px 5px 5px lightgrey',width:'40%'}}>
             <div className='d-flex'>
@@ -130,9 +70,7 @@ const EditUserDatails = ({handleClose,data}) =>{
                                
               
             </form>
-            <Button variant="contained" color="primary" style={{color:'#FFFFFF',padding:'10px 15px',margin:'40px 0 0 0',width:'100%'}} 
-                onClick={() => PostData()}
-            >
+            <Button variant="contained" color="primary" style={{color:'#FFFFFF',padding:'10px 15px',margin:'40px 0 0 0',width:'100%'}} >
               Save Changes
             </Button>
            

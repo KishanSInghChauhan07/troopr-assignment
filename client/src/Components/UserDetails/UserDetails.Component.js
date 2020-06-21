@@ -11,6 +11,7 @@ import EditUserDatails from '../EditUserDetails/EditUserDetails'
 const HomePage = () => {
     const [feed,setFeed ] = useState([])
     const [open, setOpen] = React.useState(false);
+    const [openEdit, setOpenEdit] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [placement, setPlacement] = React.useState();
     const [pop, setPop] = React.useState(false);
@@ -31,6 +32,13 @@ const HomePage = () => {
   
     const handleClose = () => {
       setOpen(false);
+    };
+    const handleOpenEdit = () => {
+      setOpenEdit(true);
+    };
+  
+    const handleCloseEdit = () => {
+      setOpenEdit(false);
     };
     const handleClick = (newPlacement) => (event) => {
         setAnchorEl(event.currentTarget);
@@ -86,28 +94,7 @@ const HomePage = () => {
                                         </TableCell>
                                         <TableCell>
                                             <MoreHorizIcon style={{cursor:'pointer'}}  onClick={handleClick('bottom-end')}/>
-                                            <Popper open={pop} anchorEl={anchorEl} placement={placement} transition>
-                                              {({ TransitionProps }) => (
-                                                <Fade {...TransitionProps} timeout={350}>
-                                                  <Paper style={{padding:'10px 15px'}}>
-                                                      <p style={{margin:'5px 0',cursor:'pointer'}} onClick={handleOpen}><EditIcon  style={{fontSize:'17px',margin:'0 5px 2px 5px',color:'grey'}}/><span>Edit User Details</span></p>
-                                                      <p style={{margin:'5px 0',cursor:'pointer'}}><DeleteIcon style={{fontSize:'17px',margin:'0 5px 2px 5px',color:'red'}}/><span>Delete User</span></p>
-                                                  </Paper>
-                                                </Fade>
-                                              )}
-                                            </Popper>
-                                            <Modal
-                                              open={open}
-                                              style={{display:'flex',justifyContent:'center',alignItems:'center'}}
-                                              onClose={handleClose}
-                                              closeAfterTransition
-                                              BackdropComponent={Backdrop}
-                                              BackdropProps={{
-                                                  timeout: 500,
-                                              }}
-                                            >
-                                              <EditUserDatails in={open} handleClose={handleClose}/>
-                                            </Modal>
+                                            
                                         </TableCell>
                                     </TableRow>
                                 )
@@ -128,7 +115,28 @@ const HomePage = () => {
             >
               <AddUserDatails in={open} handleClose={handleClose}/>
             </Modal>
-            
+            <Popper open={pop} anchorEl={anchorEl} placement={placement} transition>
+              {({ TransitionProps }) => (
+                <Fade {...TransitionProps} timeout={350}>
+                  <Paper style={{padding:'10px 15px'}}>
+                      <p style={{margin:'5px 0',cursor:'pointer'}} onClick={handleOpenEdit}><EditIcon  style={{fontSize:'17px',margin:'0 5px 2px 5px',color:'grey'}}/><span>Edit User Details</span></p>
+                      <p style={{margin:'5px 0',cursor:'pointer'}}><DeleteIcon style={{fontSize:'17px',margin:'0 5px 2px 5px',color:'red'}}/><span>Delete User</span></p>
+                  </Paper>
+                </Fade>
+              )}
+            </Popper>
+            <Modal
+              open={openEdit}
+              style={{display:'flex',justifyContent:'center',alignItems:'center'}}
+              onClose={handleCloseEdit}
+              closeAfterTransition
+              BackdropComponent={Backdrop}
+              BackdropProps={{
+                  timeout: 500,
+              }}
+            >
+              <EditUserDatails in={open} handleClose={handleCloseEdit}/>
+            </Modal>
             
         </>
     )
