@@ -2,11 +2,10 @@ const express = require('express');
 const router = express.Router()
 const mongoose = require('mongoose');
 const Data = mongoose.model("Data")
-const bcrypt = require('bcryptjs');
 
 
 router.post('/',(req,res) => {
-    const {name,email,password,address,phone,image} = req.body
+    const {name,email,address,phone,image} = req.body
     if(!email || !name || !phone || !image || !address){
         return res.status(422).json({error:"Please add all the fields"})
     }
@@ -43,6 +42,35 @@ router.get('/all',(req,res) => {
     Data.find()
     .then( data =>{
         res.json({data})
+    })
+    .catch(err =>{
+        console.log(err);
+        
+    })
+})
+
+router.get('/user/:id',(req,res) => {
+    Data.findById(req.params.id)
+    .then( data =>{
+        res.json({data})
+    })
+    .catch(err =>{
+        console.log(err);
+        
+    })
+})
+
+router.post('/user/:id',(req,res) => {
+    Data.findById(req.params.id)
+    .then( data =>{
+        data.name = req.body.name;
+        data.email = req.body.email;
+        data.phone = req.body.phone;
+        data.address = req.body.address;
+
+        data.save()
+        .then(() => res.json("updated"))
+        .catch(err => res.json(err))
     })
     .catch(err =>{
         console.log(err);

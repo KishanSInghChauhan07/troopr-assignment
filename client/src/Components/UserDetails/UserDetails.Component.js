@@ -5,6 +5,8 @@ import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import AddUserDatails from '../AddUserDatails/AddUserDetails.Component'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import EditUserDatails from '../EditUserDetails/EditUserDetails'
+
 
 const HomePage = () => {
     const [feed,setFeed ] = useState([])
@@ -41,7 +43,7 @@ const HomePage = () => {
             <Card className="shadow">
             <div style={{width:'80%',margin:'3% auto',display:'flex'}}>
                 <h3 style={{fontWeight:'600'}}>User Directory</h3>
-                <Button variant="contained" color="primary" style={{marginLeft:'auto'}} onClick={handleOpen} className="modal-button"><AddCircleIcon style={{margin:'0 5px 0 0',height:'20px'}} />Add new user</Button>
+                <Button variant="contained" color="primary" style={{marginLeft:'auto'}} onClick={handleOpen} className="modal-button"><AddCircleIcon style={{margin:'0 5px 0 0',height:'20px'}} />Add New User</Button>
             </div>
             </Card>
             <Paper style={{width:'80%',margin:'25px auto 25px auto'}} className="shadow">
@@ -67,9 +69,9 @@ const HomePage = () => {
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                            {feed.map((data) =>{
+                            {feed.map((data,i) =>{
                                 return(
-                                    <TableRow hover role="checkbox" tabIndex={-1}>
+                                    <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                                         <TableCell className="d-flex align-items-center">
                                             <Avatar alt="user pic" src={data.image} /><span className="ml-3">{data.name}</span>
                                         </TableCell>
@@ -84,6 +86,28 @@ const HomePage = () => {
                                         </TableCell>
                                         <TableCell>
                                             <MoreHorizIcon style={{cursor:'pointer'}}  onClick={handleClick('bottom-end')}/>
+                                            <Popper open={pop} anchorEl={anchorEl} placement={placement} transition>
+                                              {({ TransitionProps }) => (
+                                                <Fade {...TransitionProps} timeout={350}>
+                                                  <Paper style={{padding:'10px 15px'}}>
+                                                      <p style={{margin:'5px 0',cursor:'pointer'}} onClick={handleOpen}><EditIcon  style={{fontSize:'17px',margin:'0 5px 2px 5px',color:'grey'}}/><span>Edit User Details</span></p>
+                                                      <p style={{margin:'5px 0',cursor:'pointer'}}><DeleteIcon style={{fontSize:'17px',margin:'0 5px 2px 5px',color:'red'}}/><span>Delete User</span></p>
+                                                  </Paper>
+                                                </Fade>
+                                              )}
+                                            </Popper>
+                                            <Modal
+                                              open={open}
+                                              style={{display:'flex',justifyContent:'center',alignItems:'center'}}
+                                              onClose={handleClose}
+                                              closeAfterTransition
+                                              BackdropComponent={Backdrop}
+                                              BackdropProps={{
+                                                  timeout: 500,
+                                              }}
+                                            >
+                                              <EditUserDatails in={open} handleClose={handleClose}/>
+                                            </Modal>
                                         </TableCell>
                                     </TableRow>
                                 )
@@ -104,16 +128,8 @@ const HomePage = () => {
             >
               <AddUserDatails in={open} handleClose={handleClose}/>
             </Modal>
-            <Popper open={pop} anchorEl={anchorEl} placement={placement} transition>
-                {({ TransitionProps }) => (
-                  <Fade {...TransitionProps} timeout={350}>
-                    <Paper style={{padding:'10px 15px'}}>
-                        <p style={{margin:'5px 0',cursor:'pointer'}}><EditIcon  style={{fontSize:'17px',margin:'0 5px 2px 5px',color:'grey'}}/><span>Edit User Details</span></p>
-                        <p style={{margin:'5px 0',cursor:'pointer'}}><DeleteIcon style={{fontSize:'17px',margin:'0 5px 2px 5px',color:'red'}}/><span>Delete User</span></p>
-                    </Paper>
-                  </Fade>
-                )}
-            </Popper>
+            
+            
         </>
     )
 }
